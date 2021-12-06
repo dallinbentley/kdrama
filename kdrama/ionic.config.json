@@ -1,0 +1,7 @@
+{
+  "name": "kdrama",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
