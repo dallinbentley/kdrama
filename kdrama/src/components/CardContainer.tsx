@@ -1,73 +1,226 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonIcon, IonLabel, IonButton, IonGrid, IonRow, IonCol } from '@ionic/react';
-import { pin, wifi, wine, warning, walk } from 'ionicons/icons';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonIcon, IonLabel, IonButton, IonGrid, IonRow, IonCol, IonImg, IonThumbnail } from '@ionic/react';
+import axios from 'axios';
+import './CardContainer.css';
 
-export const CardContainer: React.FC = () => {
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>CardExamples</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+class CardContainer extends React.Component {
+
+  state = {
+    movies: []
+  }
+
+  componentDidMount() {
+    const body = { genre_str: 'All' };
+    axios.post('https://nmbfapb9ge.execute-api.us-east-2.amazonaws.com/Project3/', body)
+      .then(res => {
+        const movies = res.data;
+        this.setState({ movies });
+      })
+  }
+
+  render() {
+    return (
       <IonContent>
-          <IonGrid>
-              <IonRow>
-                  <IonCol>
+        <IonGrid>
+          <IonRow>
+          {
+            this.state.movies
+              .map((movie: any) =>
+                  <IonCol size="2">
                     <IonCard>
-                    <IonCardHeader>
-                        <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
-                        <IonCardTitle>Card Title</IonCardTitle>
-                    </IonCardHeader>
-
-                    <IonCardContent>
-                        Keep close to Nature's heart... and break clear away, once in awhile,
-                        and climb a mountain or spend a week in the woods. Wash your spirit clean.
-                    </IonCardContent>
+                      <IonCardHeader>
+                        <IonCardTitle>{movie.name.S}</IonCardTitle>
+                        <IonCardSubtitle>{movie.genre.S}</IonCardSubtitle>
+                      </IonCardHeader>
+                      <IonCardContent>
+                        <IonImg src={"https://kdrama-proj.s3.us-east-2.amazonaws.com/images/" + movie.image.S}></IonImg>
+                          <IonCardSubtitle>
+                            Total Episodes: {movie.episodes.N} <br />
+                            Rating : {movie.ratingValue.N} ({movie.ratingCount.N}) <br />
+                            Air Date: {movie.aired.S} <br /><br />
+                          </IonCardSubtitle>
+                      </IonCardContent>
                     </IonCard>
-                    </IonCol>
-
-                    <IonCol>
-                    <IonCard>
-                    <IonItem>
-                        <IonIcon icon={pin} slot="start" />
-                        <IonLabel>ion-item in a card, icon left, button right</IonLabel>
-                        <IonButton fill="outline" slot="end">View</IonButton>
-                    </IonItem>
-
-                    <IonCardContent>
-                        This is content, without any paragraph or header tags,
-                        within an ion-cardContent element.
-                    </IonCardContent>
-                    </IonCard>
-                </IonCol>
-            </IonRow>
-
-            <IonCard>
-            <IonItem href="#" className="ion-activated">
-                <IonIcon icon={wifi} slot="start" />
-                <IonLabel>Card Link Item 1 activated</IonLabel>
-            </IonItem>
-
-            <IonItem href="#">
-                <IonIcon icon={wine} slot="start" />
-                <IonLabel>Card Link Item 2</IonLabel>
-            </IonItem>
-
-            <IonItem className="ion-activated">
-                <IonIcon icon={warning} slot="start" />
-                <IonLabel>Card Button Item 1 activated</IonLabel>
-            </IonItem>
-
-            <IonItem>
-                <IonIcon icon={walk} slot="start" />
-                <IonLabel>Card Button Item 2</IonLabel>
-            </IonItem>
-            </IonCard>
+                  </IonCol>
+                )
+          }
+          </IonRow>
         </IonGrid>
       </IonContent>
-    </IonPage>
-  );
-};
+      // <IonPage>
+      //   <IonHeader>
+      //     <IonToolbar>
+      //       <IonTitle>CardExamples</IonTitle>
+      //     </IonToolbar>
+      //   </IonHeader>
+      //   <IonContent>
+      //       <IonGrid>
+      //           <IonRow>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                   Hello World
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //         </IonRow>
+      //         <IonRow>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //         </IonRow>
+      //         <IonRow>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //               <IonCol>
+      //                 <IonCard>
+      //                 <IonCardHeader>
+      //                     <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
+      //                     <IonCardTitle>Card Title</IonCardTitle>
+      //                 </IonCardHeader>
+
+      //                 <IonCardContent>
+      //                     Keep close to Nature's heart... and break clear away, once in awhile,
+      //                     and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      //                 </IonCardContent>
+      //                 </IonCard>
+      //               </IonCol>
+      //         </IonRow>
+      //     </IonGrid>
+      //   </IonContent>
+      // </IonPage>
+    );
+  };
+}
 
 export default CardContainer;
